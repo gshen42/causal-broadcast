@@ -1,0 +1,3 @@
+name: causal-broadcast
+include: src
+depend: standard-library
