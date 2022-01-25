@@ -9,10 +9,10 @@ module CausalBroadcast.History (n : ℕ) (Msg : Set) where
 open import CausalBroadcast.Event n Msg
 open import Data.Empty using (⊥-elim)
 open import Data.Fin using (Fin)
-open import Data.Product using (_×_; proj₁; proj₂)
+open import Data.Product using (_×_; proj₁; proj₂; ∃-syntax; -,_)
 open import Data.Sum using (_⊎_; inj₁; inj₂; fromInj₁)
 open import Function using (_∘_)
-open import Relation.Binary.PropositionalEquality using (_≢_; refl)
+open import Relation.Binary.PropositionalEquality using (_≡_; _≢_; refl)
 
 private
   variable
@@ -75,7 +75,7 @@ proj₂ (∈↔⊏ _) = ⊏→∈
 -- Some handy subsets of `_∈_`.
 
 -- `e ∈⁻ h` means `e` is a event that originates from history `h`
-data _∈⁻_ : Event p → History p → Set where
+data _∈⁻_ : Event p → History p′ → Set where
   here   : e ∈⁻ e
   there₁ : e ∈⁻ e′ → e ∈⁻ send m  e′
   there₂ : e ∈⁻ e′ → e ∈⁻ recv e″ e′
@@ -98,8 +98,14 @@ data _∈ˢ_ : Event p → History p′ → Set where
 ∈ˢ→∈ (there₂ x) = there₂ (∈ˢ→∈ x)
 ∈ˢ→∈ (there₃ x) = there₃ (∈ˢ→∈ x)
 
+∈ˢ→send : e ∈ˢ e′ → ∃[ m ] ∃[ e″ ] e ≡ send m e″
+∈ˢ→send here       = -, -, refl
+∈ˢ→send (there₁ x) = ∈ˢ→send x
+∈ˢ→send (there₂ x) = ∈ˢ→send x
+∈ˢ→send (there₃ x) = ∈ˢ→send x
+
 -- `e ∈ˢ⁻ h` means `e` is a send event that originates from history `h`
-data _∈ˢ⁻_ : Event p → History p → Set where
+data _∈ˢ⁻_ : Event p → History p′ → Set where
   here   : send m e ∈ˢ⁻ send m e
   there₁ : e ∈ˢ⁻ e′ → e ∈ˢ⁻ send m  e′
   there₂ : e ∈ˢ⁻ e′ → e ∈ˢ⁻ recv e″ e′
