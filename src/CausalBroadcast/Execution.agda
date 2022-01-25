@@ -119,9 +119,14 @@ e⊏head⊎e≡head = induction P P₀ Pstep
   Pstep _ Ps (recv p _ _ _ _) p′ _ _ (there₂ x) (there₂ y) | yes _ = Ps _ _ _ x y
   Pstep _ Ps (recv p _ _ _ _) p′ _ _ x          y          | no  _ = Ps _ _ _ x y
 
+fifo-delivery : State → Set
+fifo-delivery s = ∀ p p′ (e e′ : Event p′) →
+                  e  ∈ʳ⁻ (s p) →
+                  e′ ∈ˢ⁻ e     →
+                  e′ ∈ʳ⁻ (s p)
+
 causal-delivery : State → Set
-causal-delivery s = ∀ p₁ p₂ p (e₁ : Event p₁) (e₂ : Event p₂) e₁′ e₂′ →
-                    recv e₁ e₁′ ∈⁻ (s p) →
-                    recv e₂ e₂′ ∈⁻ (s p) →
-                    e₁ ⊏ e₂ →
-                    recv e₁ e₁′ ⊏ recv e₂ e₂′
+causal-delivery s = ∀ p p′ (e e′ : Event p′) →
+                    e  ∈ʳ⁻ (s p) →
+                    e′ ∈ˢ  e     →
+                    e′ ∈ʳ⁻ (s p)
