@@ -65,11 +65,11 @@ wf-recv = induction P P₀ Pstep
   P₀ : P s₀
   P₀ _ _ ()
 
-  Pstep : ∀ {s s′} → reachable s → P s → s —⟶ s′ → P s′
-  Pstep _ Ps (broadcast pᵇ _) p _ x          with pᵇ ≟ p
-  Pstep _ Ps (broadcast pᵇ _) p _ (there₁ x) | yes _ = Ps _ _ x
-  Pstep _ Ps (broadcast pᵇ _) p _ x          | no  _ = Ps _ _ x
-  Pstep _ Ps (deliver pᵈ pᵇ _ _) p _ x          with pᵈ ≟ p
-  Pstep _ Ps (deliver pᵈ pᵇ _ y) p _ here       | yes _ = ∈ˢ→send (∈ˢ⁻→∈ˢ y)
-  Pstep _ Ps (deliver pᵈ pᵇ _ _) p _ (there₂ x) | yes _ = Ps _ _ x
-  Pstep _ Ps (deliver pᵈ pᵇ _ _) p _ x          | no  _ = Ps _ _ x
+  Pstep : ∀ {s s′} → P s → s —⟶ s′ → P s′
+  Pstep Ps (broadcast pᵇ _) p _ x          with pᵇ ≟ p
+  Pstep Ps (broadcast pᵇ _) p _ (there₁ x) | yes _ = Ps _ _ x
+  Pstep Ps (broadcast pᵇ _) p _ x          | no  _ = Ps _ _ x
+  Pstep Ps (deliver pᵈ _ _ _) p _ x          with pᵈ ≟ p
+  Pstep Ps (deliver pᵈ _ _ y) p _ here       | yes _ = ∈ˢ→send (∈ˢ⁻→∈ˢ y)
+  Pstep Ps (deliver pᵈ _ _ _) p _ (there₂ x) | yes _ = Ps _ _ x
+  Pstep Ps (deliver pᵈ _ _ _) p _ x          | no  _ = Ps _ _ x
