@@ -34,13 +34,13 @@ data _—⟶_ : State → State → Set where
               s —⟶ update s pᵈ (recv e)
 
 fifo-delivery : State → Set
-fifo-delivery s = ∀ p₀ p p′ (e : Event p) (e′ : Event p′) →
+fifo-delivery s = ∀ p₀ p p′ {e : Event p} {e′ : Event p′} →
                   e  ∈ʳ⁻ (s p₀) →
                   e′ ∈ˢ⁻ e      →
                   e′ ∈ʳ⁻ (s p₀)
 
 causal-delivery : State → Set
-causal-delivery s = ∀ p₀ p p′ (e : Event p) (e′ : Event p′) →
+causal-delivery s = ∀ p₀ p p′ {e : Event p} {e′ : Event p′} →
                     e  ∈ʳ⁻ (s p₀) →
                     e′ ∈ˢ  e      →
                     e′ ∈ʳ⁻ (s p₀)

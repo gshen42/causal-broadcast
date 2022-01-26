@@ -14,6 +14,8 @@ open import Data.Sum using (_⊎_; inj₁; inj₂; fromInj₁)
 open import Function using (_∘_)
 open import Relation.Binary.PropositionalEquality using (_≡_; _≢_; refl)
 
+infix 4 _∈_ _∈⁻_ _∈ˢ_ _∈ˢ⁻_ _∈ʳ_ _∈ʳ⁻_
+
 private
   variable
     p p′ p″ : Fin n
